@@ -21,6 +21,7 @@ if(isset($_POST['searchInput'])){
     }
     else{
     $_SESSION['searchInput'] = $_POST['searchInput'];
+    // $_SESSION['searchInput'] = preg_replace('/\s+/', '+', $_SESSION['searchInput']);
     $_SESSION['offset'] = 0;
     }
 }
@@ -31,7 +32,7 @@ else{
 
 //API request to get recipes
 $recipeSearchUrl = SPOONACULAR_URL . 'recipes/complexSearch?query=' . $_SESSION['searchInput'] . '&offset=' . $_SESSION['offset'] . '&number=12&apiKey=' . $SPOONACULAR['client_id'];
-
+$recipeSearchUrl = preg_replace('/\s+/', '+', $recipeSearchUrl);
     //curl commands to grab API results
     $ch = curl_init();
 
@@ -52,10 +53,13 @@ $recipeSearchUrl = SPOONACULAR_URL . 'recipes/complexSearch?query=' . $_SESSION[
         $options = '<h3>There are no results for this search</h3>';
     }
     else{
-
         //Loops through each response received from the Spoonacular API request and grabs data to be displayed
         for($i = 0; $i<$response->number; $i++){
 
+        if (!array_key_exists($i, $response->results)){
+            break;
+        }
+        else{
         //Grabs specified values
         $recipeID = $response->results[$i]->id; //Used for another API request to get recipe information
         $recipeTitle = $response->results[$i]->title;
@@ -70,6 +74,7 @@ $recipeSearchUrl = SPOONACULAR_URL . 'recipes/complexSearch?query=' . $_SESSION[
                                 <button type="submit" class="recipeLink" name="recipeSubmit"> ' . $recipeTitle . '</button>
                             </form>
                         </div>';
+        }
         }
     }
 
