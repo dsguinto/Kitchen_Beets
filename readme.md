@@ -9,6 +9,7 @@ Kitchen Beets is a web application that allows a user to search for recipes usin
 The length of the video (response: duration) will match or be within +10 minutes of the maximum amount of time (response: maxReadyTime) the recipe is expected to take to make.
 
 App is restricted by the number of API request available per day.
+
 ---
 
 ### API's Used
